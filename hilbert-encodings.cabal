@@ -20,7 +20,7 @@ maintainer:         fabian.mitterwallner@uibk.ac.at
 extra-source-files: CHANGELOG.md
 
 library
-    exposed-modules:  MyLib
+    exposed-modules:  Polynomial
                     , Polynomial.Type
                     , Polynomial.Parse
                     , Polynomial.Pretty
@@ -52,9 +52,9 @@ executable hilbert-encodings
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
-    build-depends:
-        base ^>=4.14.3.0,
-        hilbert-encodings
+    build-depends:    base ^>=4.14.3.0
+                    , hilbert-encodings
+                    , text
 
     -- Directories containing source files.
     -- hs-source-dirs:

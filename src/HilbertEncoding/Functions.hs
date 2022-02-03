@@ -8,6 +8,7 @@ module HilbertEncoding.Functions (
   -- if and only if the following decision problem is fulfilled:
   --
   -- _Input:_ as Polynomial $P$
+  --
   -- _Question:_ is P(x1,...,xn) > 0 for all natural numbers x1, ..., xn?
   encode,
   -- * Encoding as differences of terms

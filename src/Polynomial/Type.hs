@@ -6,6 +6,7 @@
 module Polynomial.Type where
 
 import qualified Data.Map as Map
+import qualified Data.Set as Set
 
 -- | Power Product
 newtype PowerProduct v e = PowerProd {powerprodToMap :: Map.Map v e}
@@ -72,3 +73,9 @@ monomials :: Polynomial v e c -> [Monomial v e c]
 monomials pp = [Monomial c pp | (pp, c) <- Map.toList coeffMap]
  where
   coeffMap = polyToMap pp
+
+polyVars :: Ord v => Polynomial v e c -> Set.Set v
+polyVars = Set.unions . map ppVars . Map.keys .  polyToMap
+
+ppVars :: Ord v => PowerProduct v e -> Set.Set v
+ppVars = Set.fromList . Map.keys . powerprodToMap

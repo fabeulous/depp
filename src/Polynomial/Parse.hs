@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 
 -- |
-module Polynomial.Parse where
+module Polynomial.Parse (parsePolynomial) where
 
 import Polynomial.Type (Monomial, Polynomial, PowerProduct, singleVar)
 import qualified Polynomial.Type as Poly

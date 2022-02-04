@@ -29,6 +29,7 @@ library
                     , HilbertEncoding.Degrees
                     , HilbertEncoding.Utils
                     , Rewriting.Pretty
+                    , Output
 
     -- Modules included in this library but not exported.
     -- other-modules:

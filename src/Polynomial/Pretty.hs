@@ -5,12 +5,10 @@ module Polynomial.Pretty where
 
 import qualified Polynomial.Type as Poly
 
+import Data.Text (Text)
 import Prettyprinter (Doc, Pretty (pretty), hsep, sep, (<+>))
 
-instance (Pretty c, Pretty e, Pretty v, Num c, Ord c, Eq c, Num e, Eq e) => Pretty (Poly.Polynomial v e c) where
-  pretty = prettyPolynomial
-
-prettyPolynomial :: (Pretty e, Pretty v, Pretty c, Num c, Eq c, Eq e, Num e, Ord c) => Poly.Polynomial v e c -> Doc ann
+prettyPolynomial :: Poly.Polynomial Text Int Int -> Doc ann
 prettyPolynomial poly = case mons of
   [] -> "0"
   m : ms -> hsep $ prettyMonomial m : map withSign ms
@@ -21,12 +19,12 @@ prettyPolynomial poly = case mons of
     | c < 0 = "-" <+> prettyMonomial (Poly.Monomial (- c) pp)
     | otherwise = "+" <+> prettyMonomial m
 
-prettyMonomial :: (Pretty e, Pretty v, Pretty c, Num c, Eq c, Eq e, Num e) => Poly.Monomial v e c -> Doc ann
+prettyMonomial :: Poly.Monomial Text Int Int -> Doc ann
 prettyMonomial (Poly.Monomial c pp)
   | c == 1 = prettyPowerProd pp
   | otherwise = pretty c <+> prettyPowerProd pp
 
-prettyPowerProd :: (Pretty e, Pretty v, Eq e, Num e) => Poly.PowerProduct v e -> Doc ann
+prettyPowerProd :: Poly.PowerProduct Text Int -> Doc ann
 prettyPowerProd pp = sep [prettyExp v e | (v, e) <- Poly.exponents pp]
  where
   prettyExp v e

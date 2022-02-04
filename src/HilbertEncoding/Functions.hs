@@ -35,9 +35,9 @@ encode poly = (l .->. r) : trsRn
  where
   n =
     maximum
-      [ exponent
+      [ e
       | Monomial _ pp <- Poly.monomials poly
-      , exponent <- Map.elems (Poly.powerprodToMap pp)
+      , e <- Map.elems (Poly.powerprodToMap pp)
       ]
   trsRn = trsR0 ++ exponents n
   (l, r) = encodePolynomial poly

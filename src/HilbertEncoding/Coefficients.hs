@@ -8,11 +8,9 @@ import Polynomial.Type (Monomial (..), Polynomial (Polynomial))
 import qualified Polynomial.Type as Poly
 
 import qualified Data.Map as Map
-import Data.Rewriting.Rules (Reduct (pos))
 import Data.Rewriting.Term (Term (..))
 import qualified Data.Set as Set
 import Data.Text (Text)
-import qualified Data.Text as Text
 
 encode :: Polynomial Text Int Int -> TRS Text Text
 encode poly = polyRules ++ trsC ++ encodeVarConstraints vars

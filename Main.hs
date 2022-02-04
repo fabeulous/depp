@@ -1,4 +1,3 @@
-{-# LANGUAGE LambdaCase #-}
 {-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 
 module Main where
@@ -7,12 +6,9 @@ import qualified HilbertEncoding.Coefficients as Coefficients
 import qualified HilbertEncoding.Degrees as Degrees
 import qualified HilbertEncoding.Functions as Functions
 import qualified Output
-import Polynomial (Polynomial (Polynomial), prettyPolynomial)
+import Polynomial (Polynomial)
 import qualified Polynomial.Parse as Poly
-import Rewriting.Pretty (prettyTRS)
 
-import Data.Char (toLower)
-import Data.Function ((&))
 import Data.Functor.Identity (Identity (Identity, runIdentity))
 import Data.Text (Text)
 import System.Console.GetOpt (ArgDescr (..), OptDescr (..))
@@ -29,6 +25,7 @@ data Settings f = Settings
   , outputFormat :: Format
   }
 
+defSettings :: Settings Maybe
 defSettings =
   Settings
     { encoding = Nothing
@@ -73,7 +70,7 @@ usage :: Handle -> IO ()
 usage handle = do
   progName <- getProgName
   hPutStrLn handle $ Opt.usageInfo (helpHeader progName) optionDescription
-  hPutStrLn handle $ helpFooter
+  hPutStrLn handle helpFooter
 
 helpHeader :: String -> String
 helpHeader name =
@@ -123,7 +120,7 @@ main = do
               exitFailure
             Right poly -> main' settings poly
     (_, [], _) -> do
-      hPutStrLn stderr $ "Error: requires at least one of (-f,-d,-c) and a POLY."
+      hPutStrLn stderr "Error: requires at least one of (-f,-d,-c) and a POLY."
       usage stderr
       exitFailure
     (_, _, e : _) -> do

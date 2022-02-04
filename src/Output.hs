@@ -4,15 +4,14 @@
 module Output where
 
 import HilbertEncoding.Utils (TRS)
-import Polynomial (Polynomial (Polynomial), prettyPolynomial)
+import Polynomial (Polynomial, prettyPolynomial)
 import Rewriting.Pretty (prettyTRS)
 
 import Data.Containers.ListUtils (nubOrd)
 import qualified Data.Rewriting.Rules as R
 import Data.Text (Text)
-import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
-import Prettyprinter (Doc, LayoutOptions (..), PageWidth (..), Pretty (pretty), (<+>), (<>))
+import Prettyprinter (Doc, LayoutOptions (..), PageWidth (..), Pretty (pretty))
 import qualified Prettyprinter as Pretty
 import qualified Prettyprinter.Render.Text as Pretty
 

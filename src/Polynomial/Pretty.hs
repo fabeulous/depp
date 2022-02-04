@@ -5,8 +5,7 @@ module Polynomial.Pretty where
 
 import qualified Polynomial.Type as Poly
 
-import qualified Data.List as List
-import Prettyprinter (Doc, Pretty (pretty), encloseSep, hsep, sep, space, (<+>))
+import Prettyprinter (Doc, Pretty (pretty), hsep, sep, (<+>))
 
 instance (Pretty c, Pretty e, Pretty v, Num c, Ord c, Eq c, Num e, Eq e) => Pretty (Poly.Polynomial v e c) where
   pretty = prettyPolynomial

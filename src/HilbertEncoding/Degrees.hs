@@ -7,13 +7,11 @@ import HilbertEncoding.Utils
 import Polynomial.Type (Monomial (..), Polynomial (Polynomial))
 import qualified Polynomial.Type as Poly
 
-import Data.List.NonEmpty (NonEmpty ((:|)))
 import qualified Data.Map as Map
 import Data.Rewriting.Rule (Rule)
 import Data.Rewriting.Term (Term (..))
 import qualified Data.Set as Set
 import Data.Text (Text)
-import qualified Data.Text as Text
 
 encode :: Polynomial Text Int Int -> TRS Text Text
 encode poly
@@ -47,9 +45,7 @@ encodePolynomial poly =
       error
         "HilbertEncoding.Degrees.encodePolynomial: \
         \ polynomial must be non zero"
-    (x : xs) -> go (fmap encodeMonomial (x :| xs))
- where
-  go (x :| xs) = foldr (curry m) x xs
+    ys -> foldr1 (curry m) (fmap encodeMonomial ys)
 
 ruleX :: Set.Set Text -> Rule Text Text
 ruleX vars = g(o) .->. m(q(o), a (o, varTerm))

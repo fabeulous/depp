@@ -3,12 +3,11 @@
 -- |
 module Polynomial.Parse (parsePolynomial) where
 
-import Polynomial.Type (Monomial, Polynomial, PowerProduct, singleVar)
+import Polynomial.Type (Monomial, Polynomial, PowerProduct)
 import qualified Polynomial.Type as Poly
 
 import Data.Coerce (coerce)
 import Data.Functor (($>))
-import Data.Monoid (Sum (Sum))
 import Data.Text (Text)
 import qualified Data.Text as T
 import Text.Parsec (ParsecT, Stream, (<|>))

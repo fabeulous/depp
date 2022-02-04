@@ -70,7 +70,7 @@ polynomial :: (Monoid c, Ord e, Ord v) => [Monomial v e c] -> Polynomial v e c
 polynomial = foldMap polyOfMonomial
 
 monomials :: Polynomial v e c -> [Monomial v e c]
-monomials pp = [Monomial c pp | (pp, c) <- Map.toList coeffMap]
+monomials pp = [Monomial c vs | (vs, c) <- Map.toList coeffMap]
  where
   coeffMap = polyToMap pp
 

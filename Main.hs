@@ -106,19 +106,25 @@ main :: IO ()
 main = do
   args <- getArgs
   case Opt.getOpt Opt.Permute optionDescription args of
-    (opts', polyString : _, []) -> do
+    (opts', freeArgs, []) -> do
       opts <- foldl (>>=) (return defSettings) opts'
-      case encoding opts of
-        Nothing -> do
-          hPutStrLn stderr "Error: encoding must be chosen (-f, -d, -c)"
-          usage stderr >> exitFailure
-        Just enc -> do
-          let settings = opts {encoding = Identity enc}
-          case Poly.parsePolynomial polyString of
-            Left e -> do
-              hPutStrLn stderr $ "Parse error: " ++ show e
-              exitFailure
-            Right poly -> main' settings poly
+      case freeArgs of
+        [] -> do
+          hPutStrLn stderr "Error: requires at least one of (-f,-d,-c) and a POLY."
+          usage stderr
+          exitFailure
+        (polyString : _) ->
+          case encoding opts of
+            Nothing -> do
+              hPutStrLn stderr "Error: encoding must be chosen (-f, -d, -c)"
+              usage stderr >> exitFailure
+            Just enc -> do
+              let settings = opts {encoding = Identity enc}
+              case Poly.parsePolynomial polyString of
+                Left e -> do
+                  hPutStrLn stderr $ "Parse error: " ++ show e
+                  exitFailure
+                Right poly -> main' settings poly
     (_, [], _) -> do
       hPutStrLn stderr "Error: requires at least one of (-f,-d,-c) and a POLY."
       usage stderr

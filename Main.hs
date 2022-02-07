@@ -7,6 +7,7 @@ import qualified HilbertEncoding.Degrees as Degrees
 import qualified HilbertEncoding.Functions as Functions
 import qualified Output
 import Polynomial (Polynomial)
+import qualified Polynomial as Poly
 import qualified Polynomial.Parse as Poly
 
 import Data.Functor.Identity (Identity (Identity, runIdentity))
@@ -16,6 +17,7 @@ import qualified System.Console.GetOpt as Opt
 import System.Environment (getArgs, getProgName)
 import System.Exit (exitFailure, exitSuccess)
 import System.IO (Handle, hPutStr, hPutStrLn, stderr, stdout)
+import qualified Data.Text as Text
 
 data Encoding = Functions | Coefficients | Degrees
 data Format = PrettyFmt | COPSFmt
@@ -99,7 +101,8 @@ helpFooter =
     , "  <powerproduct> := <exp> <powerproduct> | <exp>"
     , "  <exp> := var \"^\" integer | var"
     , ""
-    , "Here 'integer' is some integer and 'var' a sequence of letters."
+    , "Here 'integer' is some integer and 'var' a sequence of (non case"
+    , "sensitive) letters."
     ]
 
 main :: IO ()
@@ -110,7 +113,7 @@ main = do
       opts <- foldl (>>=) (return defSettings) opts'
       case freeArgs of
         [] -> do
-          hPutStrLn stderr "Error: requires at least one of (-f,-d,-c) and a POLY."
+          hPutStrLn stderr "Error: requires at least one of (-f, -d, -c) and a POLY."
           usage stderr
           exitFailure
         (polyString : _) ->
@@ -135,10 +138,11 @@ main = do
 main' :: Settings Identity -> Polynomial Text Int Int -> IO ()
 main' opt poly =
   case outputFormat opt of
-    PrettyFmt -> Output.prettyOutput poly trs
+    PrettyFmt -> Output.prettyOutput poly' trs
     COPSFmt -> Output.copsOutput trs
  where
-  trs = encode poly
+  poly' = Poly.map Text.toUpper id id poly
+  trs = encode poly'
   encode = case runIdentity $ encoding opt of
     Functions -> Functions.encode
     Coefficients -> Coefficients.encode

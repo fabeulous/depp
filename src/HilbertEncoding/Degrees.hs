@@ -18,9 +18,9 @@ encode poly
   | Map.null pos || Map.null neg =
     error
       "HilbertEncoding.Degrees.encode: \
-      \ polynomial must conatin both positive and negative monomials"
+      \ polynomial must contain both positive and negative monomials"
   | otherwise =
-    (g(tPos) .->. tNeg) : ruleX (Poly.polyVars poly) : trsD
+    (f(tPos) .->. tNeg) : ruleX (Poly.polyVars poly) : trsD
  where
   mp = Poly.polyToMap poly
   (pos, neg) = Map.partition (>= 0) mp
@@ -48,7 +48,7 @@ encodePolynomial poly =
     ys -> foldr1 (curry m) (fmap encodeMonomial ys)
 
 ruleX :: Set.Set Text -> Rule Text Text
-ruleX vars = g(o) .->. m(q(o), a (o, varTerm))
+ruleX vars = f(o) .->. m(q(o), a (o, varTerm))
  where
   varTerm
     | Set.null vars = o
@@ -56,12 +56,12 @@ ruleX vars = g(o) .->. m(q(o), a (o, varTerm))
 
 trsD :: TRS Text Text
 trsD =
-  [ q(g(x)) .->. g(g(q(x)))
-  , g(x) .->. a(x, x)
-  , a(q(x), g(g(x))) .->. q(a(x, g(o)))
-  , g(x) .->. m(o, x)
-  , g(q(x)) .->. m(x, x)
-  , g(x) .->. m(x, o)
+  [ q(f(x)) .->. f(f(q(x)))
+  , f(x) .->. a(x, x)
+  , a(q(x), f(f(x))) .->. q(a(x, f(o)))
+  , f(x) .->. m(o, x)
+  , f(q(x)) .->. m(x, x)
+  , f(x) .->. m(x, o)
   , m(x, x) .->. q(x)
   ]
 
@@ -69,15 +69,15 @@ trsD =
 
 -- Function/Variable Symbols --------------------------------------------------
 varFun :: Text -> Term Text Text -> Term Text Text
-varFun v t = Fun ("_" <> v) [t]
+varFun v t = Fun v [t]
 
 -- Constants
 o :: Term Text Text
 o = Fun "0" []
 
 -- Unary
-g, q :: Term Text Text -> Term Text Text
-g t = Fun "g" [t]
+f, q :: Term Text Text -> Term Text Text
+f t = Fun "f" [t]
 q t = Fun "q" [t]
 
 -- Binary

@@ -9,6 +9,7 @@ import Data.List (foldl1')
 import Data.Map.Merge.Strict (merge, preserveMissing, zipWithMaybeMatched)
 import qualified Data.Map.Strict as Map
 import qualified Data.Set as Set
+import Prelude hiding (map)
 
 -- | Power Product
 newtype PowerProduct v e = PowerProd {powerprodToMap :: Map.Map v e}
@@ -61,7 +62,7 @@ polyOfMonomial :: (Ord e, Ord v) => Monomial v e c -> Polynomial v e c
 polyOfMonomial (Monomial c pp) = Polynomial (Map.singleton pp c)
 
 polynomial :: (Num c, Eq c, Ord e, Ord v) => [Monomial v e c] -> Polynomial v e c
-polynomial = foldl1' addPoly . map polyOfMonomial
+polynomial = foldl1' addPoly . fmap polyOfMonomial
 
 monomials :: Polynomial v e c -> [Monomial v e c]
 monomials pp = [Monomial c vs | (vs, c) <- Map.toList coeffMap]
@@ -69,7 +70,12 @@ monomials pp = [Monomial c vs | (vs, c) <- Map.toList coeffMap]
   coeffMap = polyToMap pp
 
 polyVars :: Ord v => Polynomial v e c -> Set.Set v
-polyVars = Set.unions . map ppVars . Map.keys . polyToMap
+polyVars = Set.unions . fmap ppVars . Map.keys . polyToMap
 
 ppVars :: Ord v => PowerProduct v e -> Set.Set v
 ppVars = Set.fromList . Map.keys . powerprodToMap
+
+map :: (Ord v', Ord e') => (v -> v') -> (e -> e') -> (c -> c') -> Polynomial v e c -> Polynomial v' e' c'
+map fv fe fc (Polynomial mp) = Polynomial (Map.mapKeys mapPP (Map.map fc mp))
+ where
+  mapPP = PowerProd . Map.mapKeys fv . Map.map fe . powerprodToMap

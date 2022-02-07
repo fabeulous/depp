@@ -22,7 +22,7 @@ encodeVarConstraints :: Set.Set Text -> TRS Text Text
 encodeVarConstraints vars =
   [ r
   | v <- Set.toList vars
-  , r <- [s (o) .->. varFun v o, g (x) .->. varFun v x]
+  , r <- [s(o) .->. varFun v o, f(x) .->. varFun v x]
   ]
 
 encodeMonomial :: Monomial Text Int Int -> Term Text Text
@@ -61,18 +61,18 @@ encodePolynomial poly =
 
 trsC :: TRS Text Text
 trsC =
-  [ g(s(x)) .->. s(s(g(x)))
-  , a(q(x), g(x)) .->. q(s(x))
+  [ f(s(x)) .->. s(s(f(x)))
+  , a(q(x), f(x)) .->. q(s(x))
   , s(x) .->. a(o, x)
-  , q(g(x)) .->. g(g(q(x)))
-  , g(x) .->. a(x, x)
+  , q(f(x)) .->. f(f(q(x)))
+  , f(x) .->. a(x, x)
   , s(x) .->. a(x, o)
   ]
 
 -- Syntactic Sugar ------------------------------------------------------------
 
 varFun :: Text -> Term Text Text -> Term Text Text
-varFun v t = Fun ("_" <> v) [t]
+varFun v t = Fun v [t]
 
 -- Function/Variable Symbols --------------------------------------------------
 
@@ -81,8 +81,8 @@ o :: Term Text Text
 o = Fun "0" []
 
 -- Unary
-g, s, q :: Term Text Text -> Term Text Text
-g t = Fun "g" [t]
+f, s, q :: Term Text Text -> Term Text Text
+f t = Fun "f" [t]
 s t = Fun "s" [t]
 q t = Fun "q" [t]
 

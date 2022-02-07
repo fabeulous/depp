@@ -35,4 +35,4 @@ prettyTerm = Pretty.annotate AnnTerm . Pretty.hang 2 . go
   go (Fun f []) = Pretty.annotate AnnFunSymb (pretty f)
   go (Fun f ts) =
     Pretty.annotate AnnFunSymb (pretty f)
-      <> Pretty.align (Pretty.encloseSep "(" ")" ("," <> Pretty.space) (map go ts))
+      <> Pretty.align (Pretty.encloseSep "(" ")" "," (map go ts))

@@ -65,7 +65,7 @@ encodeMonomial (Monomial c pp)
       (a(m(l', p(i)(var v)), r'), a(m(r', p(i)(var v)), l'))
      where
       (l', r') = go mp'
-      var = Var . ("_" <>)
+      var = Var
 
 exponents :: Int -> TRS Text Text
 exponents n

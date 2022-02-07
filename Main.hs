@@ -101,8 +101,8 @@ helpFooter =
     , "  <powerproduct> := <exp> <powerproduct> | <exp>"
     , "  <exp> := var \"^\" integer | var"
     , ""
-    , "Here 'integer' is some integer and 'var' a sequence of (non case"
-    , "sensitive) letters."
+    , "Here 'integer' is some integer and 'var' a sequence of"
+    , "alpha-numerical symbols (letters are non case-sensitive)."
     ]
 
 main :: IO ()

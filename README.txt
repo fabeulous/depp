@@ -1,7 +1,8 @@
 
 * Install using cabal:
 
-To install the executable in the default location (usually ~/.cabal/bin/) run:
+To install the executable in the default location (usually ~/.cabal/bin/)
+run:
 
   cabal install
 
@@ -9,8 +10,8 @@ in the this directory. To chose a different directory DIR use:
 
   cabal install --installdir=DIR --install-method=copy
 
-When rebuilding/reinstalling you may need to add the '--overwrite-policy=always'
-option to cabal.
+When rebuilding/reinstalling you may need to add the
+'--overwrite-policy=always' option to cabal.
 
 * Usage
 
@@ -42,5 +43,5 @@ INPUT FORMAT (POLY):
   <powerproduct> := <exp> <powerproduct> | <exp>
   <exp> := var "^" integer | var
 
-Here 'integer' is some integer and 'var' a sequence of letters.
-
+Here 'integer' is some integer and 'var' a sequence of
+alpha-numerical symbols (letters are non case-sensitive).

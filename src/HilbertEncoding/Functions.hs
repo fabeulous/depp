@@ -28,6 +28,8 @@ import qualified Data.Map as Map
 import Data.Rewriting.Term (Term (..))
 import Data.Text (Text)
 import qualified Data.Text as Text
+import qualified Data.Set as Set
+import Data.List (sortBy)
 
 -- | Generates the full TRS encoding the DP
 encode :: Polynomial Text Int Int -> TRS Text Text
@@ -48,7 +50,9 @@ encodePolynomial poly
   | null mons = (o, o)
   | otherwise = (foldr1 (curry a) ls, foldr1 (curry a) rs)
   where
-    mons = Poly.monomials poly
+    mons = sortBy (flip $ Poly.totalDegreeOrder vs) $ Poly.monomials poly
+
+    vs = Set.toList (Poly.polyVars poly)
 
     (ls,rs) = unzip (map encodeMonomial mons)
 
@@ -59,7 +63,7 @@ encodeMonomial (Monomial c pp)
   | otherwise = go ppMap
  where
   ppMap = Poly.powerprodToMap pp
-  go mp = case Map.minViewWithKey mp of
+  go mp = case Map.maxViewWithKey mp of
     Nothing -> (iterate s o !! abs c, o)
     Just ((v, i), mp') ->
       (a(m(l', p(i)(var v)), r'), a(m(r', p(i)(var v)), l'))

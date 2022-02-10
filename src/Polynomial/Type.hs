@@ -5,6 +5,7 @@
 -- |
 module Polynomial.Type where
 
+import Data.Function (on)
 import Data.List (foldl')
 import Data.Map.Merge.Strict (merge, preserveMissing, zipWithMaybeMatched)
 import qualified Data.Map.Strict as Map
@@ -115,3 +116,14 @@ map fv fe fc (Polynomial mp) = Polynomial (Map.mapKeys mapPP (Map.mapMaybe fc' m
   fc' n = case fc n of
     0 -> Nothing
     n' -> Just n'
+
+totalDegreeOrder ::
+  (Num e, Ord v, Ord e, Ord c) => [v] -> Monomial v e c -> Monomial v e c -> Ordering
+totalDegreeOrder vs = compare `on` lxgr
+ where
+  lxgr (Monomial c pp) = (sum (fmap snd es), fmap (ppMap !) vs, c)
+   where
+    es = exponents pp
+    ppMap = powerprodToMap pp
+
+    mp ! k = Map.findWithDefault 0 k mp

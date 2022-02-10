@@ -11,6 +11,7 @@ import qualified Data.Map as Map
 import Data.Rewriting.Term (Term (..))
 import qualified Data.Set as Set
 import Data.Text (Text)
+import Data.List (sortBy)
 
 encode :: Polynomial Text Int Int -> TRS Text Text
 encode poly = polyRules ++ trsC ++ encodeVarConstraints vars
@@ -43,9 +44,11 @@ encodeMonomial (Monomial c pp)
 
 encodePositivePolynomial :: Polynomial Text Int Int -> Term Text Text
 encodePositivePolynomial poly =
-  case Poly.monomials poly of
+  case sortBy (flip $ Poly.totalDegreeOrder vs) (Poly.monomials poly) of
     [] -> o
     xs -> foldr1 (curry a) (map encodeMonomial xs)
+ where
+  vs = Set.toList $ Poly.polyVars poly
 
 encodePolynomial :: Polynomial Text Int Int -> TRS Text Text
 encodePolynomial poly =

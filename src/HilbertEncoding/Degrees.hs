@@ -12,6 +12,7 @@ import Data.Rewriting.Rule (Rule)
 import Data.Rewriting.Term (Term (..))
 import qualified Data.Set as Set
 import Data.Text (Text)
+import Data.List (sortBy)
 
 encode :: Polynomial Text Int Int -> TRS Text Text
 encode poly
@@ -40,12 +41,14 @@ encodeMonomial (Monomial c pp)
 
 encodePolynomial :: Polynomial Text Int Int -> Term Text Text
 encodePolynomial poly =
-  case Poly.monomials poly of
+  case sortBy (flip $ Poly.totalDegreeOrder vs) $  Poly.monomials poly of
     [] ->
       error
         "HilbertEncoding.Degrees.encodePolynomial: \
         \ polynomial must be non zero"
     ys -> foldr1 (curry m) (fmap encodeMonomial ys)
+ where
+  vs = Set.toList $ Poly.polyVars poly
 
 ruleX :: Set.Set Text -> Rule Text Text
 ruleX vars = f(o) .->. m(q(o), a (o, varTerm))

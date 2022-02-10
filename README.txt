@@ -43,5 +43,7 @@ INPUT FORMAT (POLY):
   <powerproduct> := <exp> <powerproduct> | <exp>
   <exp> := var "^" integer | var
 
-Here 'integer' is some integer and 'var' a sequence of
-alpha-numerical symbols (letters are non case-sensitive).
+Here 'integer' is some integer (e.g. 1, -3, 10) and 'var' is a variable name
+starting with a letter followed by 0 or more digits (e.g. x, x0, y10).
+Note that the starting letter is *not* case sensitive, and will be converted
+to upper-case.

@@ -80,11 +80,11 @@ exponents n
 
 trsR0 :: TRS Text Text
 trsR0 =
-  [ g(s(x)) .->. s(s(g(x)))
-  , a(q(x), g(x)) .->. q(s(x))
-  , q(g(x)) .->. g(g(q(x)))
+  [ f(s(x)) .->. s(s(f(x)))
+  , a(q(x), f(x)) .->. q(s(x))
+  , q(f(x)) .->. f(f(q(x)))
   , s(o) .->. q(o)
-  , g(x) .->. a(x, x)
+  , f(x) .->. a(x, x)
   , q(s(s(o))) .->. s(s(s(o)))
   , q(s(o)) .->. o
   , s(x) .->. a(o, x)
@@ -106,8 +106,8 @@ o :: Term Text Text
 o = Fun "0" []
 
 -- Unary
-g, s, q, d :: Term Text Text -> Term Text Text
-g t = Fun "g" [t]
+f, s, q, d :: Term Text Text -> Term Text Text
+f t = Fun "f" [t]
 s t = Fun "s" [t]
 q t = Fun "q" [t]
 d t = Fun "d" [t]

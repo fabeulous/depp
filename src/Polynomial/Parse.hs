@@ -42,7 +42,9 @@ powerVar :: Stream s m Char => ParsecT s u m (Text, Int)
 powerVar = (,) <$> var <*> P.option 1 (tok "^" *> expP)
 
 var :: Stream s m Char => ParsecT s u m Text
-var = lexP (T.pack <$> P.many1 P.alphaNum)
+var = T.pack <$> lexP var'
+ where
+  var' = (:) <$> P.letter <*> P.many P.digit
 
 coeff, expP :: Stream s m Char => ParsecT s u m Int
 expP = lexP nat

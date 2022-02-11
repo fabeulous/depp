@@ -85,14 +85,14 @@ exponents n
 trsR0 :: TRS Text Text
 trsR0 =
   [ f(s(x)) .->. s(s(f(x)))
-  , a(q(x), f(x)) .->. q(s(x))
   , q(f(x)) .->. f(f(q(x)))
-  , s(o) .->. q(o)
+  , a(q(x), f(x)) .->. q(s(x))
   , f(x) .->. a(x, x)
-  , q(s(s(o))) .->. s(s(s(o)))
-  , q(s(o)) .->. o
   , s(x) .->. a(o, x)
   , s(x) .->. a(x, o)
+  , s(o) .->. q(o)
+  , q(s(s(o))) .->. s(s(s(o)))
+  -- , q(s(o)) .->. o
   , s(s(s(s(s(o))))) .->. q(s(s(o)))
   , s(d(x)) .->. a(x, x)
   , s(s(o)) .->. q(s(o))

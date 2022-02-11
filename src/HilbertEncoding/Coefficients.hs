@@ -52,8 +52,8 @@ encodePositivePolynomial poly =
 
 encodePolynomial :: Polynomial Text Int Int -> TRS Text Text
 encodePolynomial poly =
-  [ s(tPos) .->. tNeg
-  , s(tNeg) .->. tPos
+  [ _A(s(tPos)) .->. _B(tNeg)
+  , _A(s(tNeg)) .->. _B(tPos)
   ]
  where
   mp = Poly.polyToMap poly
@@ -65,11 +65,14 @@ encodePolynomial poly =
 trsC :: TRS Text Text
 trsC =
   [ f(s(x)) .->. s(s(f(x)))
-  , a(q(x), f(x)) .->. q(s(x))
-  , s(x) .->. a(o, x)
   , q(f(x)) .->. f(f(q(x)))
   , f(x) .->. a(x, x)
+  , s(x) .->. a(o, x)
   , s(x) .->. a(x, o)
+  , a(q(x), f(x)) .->. q(s(x))
+  , s(s(o)) .->. q(s(o))
+  , s(_A(x)) .->. _B(x)
+  , s(_B(x)) .->. _A(x)
   ]
 
 -- Syntactic Sugar ------------------------------------------------------------
@@ -84,10 +87,12 @@ o :: Term Text Text
 o = Fun "0" []
 
 -- Unary
-f, s, q :: Term Text Text -> Term Text Text
+f, s, q, _A, _B :: Term Text Text -> Term Text Text
 f t = Fun "f" [t]
 s t = Fun "s" [t]
 q t = Fun "q" [t]
+_A t = Fun "A" [t]
+_B t = Fun "B" [t]
 
 -- Binary
 a :: (Term Text Text, Term Text Text) -> Term Text Text

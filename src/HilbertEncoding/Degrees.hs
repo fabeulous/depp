@@ -34,10 +34,14 @@ encodeMonomial (Monomial c pp)
     error
       "HilbertEncoding.Degrees.encodeMonomial: \
       \ coefficients most be at least 1"
-  | otherwise = go (Poly.exponents pp)
+  | otherwise = go (Poly.powerprodToMap pp)
  where
-  go [] = iterate (\t -> m(x, t)) x !! (c - 1)
-  go ((v, e) : xs) = iterate (varFun v) (go xs) !! e
+  go mp = case Map.maxViewWithKey mp of
+    Nothing -> iterate (\t -> m(x, t)) x !! (c - 1)
+    Just ((v,e),mp') -> iterate (varFun v) (go mp') !! e
+
+  -- go [] = iterate (\t -> m(x, t)) x !! (c - 1)
+  -- go ((v, e) : xs) = iterate (varFun v) (go xs) !! e
 
 encodePolynomial :: Polynomial Text Int Int -> Term Text Text
 encodePolynomial poly =
@@ -60,11 +64,11 @@ ruleX vars = f(o) .->. m(q(o), a (o, varTerm))
 trsD :: TRS Text Text
 trsD =
   [ q(f(x)) .->. f(f(q(x)))
-  , f(x) .->. a(x, x)
   , a(q(x), f(f(x))) .->. q(a(x, f(o)))
+  , f(x) .->. a(x, x)
   , f(x) .->. m(o, x)
-  , f(q(x)) .->. m(x, x)
   , f(x) .->. m(x, o)
+  , f(q(x)) .->. m(x, x)
   , m(x, x) .->. q(x)
   ]
 

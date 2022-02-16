@@ -32,15 +32,16 @@ encodeMonomial (Monomial c pp)
     error
       "HilbertEncoding.Coefficients.encodeMonomial: \
       \coefficient must be non negative"
-  | otherwise = go (Poly.exponents pp)
+  | otherwise = go (Poly.powerprodToMap pp)
  where
-  go [] = iterate s o !! c
-  go ((v, e) : xs)
-    | e < 0 =
-      error
-        "HilbertEncoding.Coefficients.encodeMonomial: \
-        \exponent must be non negative"
-    | otherwise = iterate (varFun v) (go xs) !! e
+  go mp = case Map.maxViewWithKey mp of
+    Nothing -> iterate s o !! c
+    Just ((v, e), mp')
+      | e < 0 ->
+        error
+          "HilbertEncoding.Coefficients.encodeMonomial: \
+          \exponent must be non negative"
+      | otherwise -> iterate (varFun v) (go mp') !! e
 
 encodePositivePolynomial :: Polynomial Text Int Int -> Term Text Text
 encodePositivePolynomial poly =
@@ -66,10 +67,10 @@ trsC :: TRS Text Text
 trsC =
   [ f(s(x)) .->. s(s(f(x)))
   , q(f(x)) .->. f(f(q(x)))
+  , a(q(x), f(x)) .->. q(s(x))
   , f(x) .->. a(x, x)
   , s(x) .->. a(o, x)
   , s(x) .->. a(x, o)
-  , a(q(x), f(x)) .->. q(s(x))
   , s(s(o)) .->. q(s(o))
   , s(_A(x)) .->. _B(x)
   , s(_B(x)) .->. _A(x)

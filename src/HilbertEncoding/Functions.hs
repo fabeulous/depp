@@ -86,17 +86,17 @@ trsR0 :: TRS Text Text
 trsR0 =
   [ f(s(x)) .->. s(s(f(x)))
   , q(f(x)) .->. f(f(q(x)))
-  , a(q(x), f(x)) .->. q(s(x))
   , f(x) .->. a(x, x)
   , s(x) .->. a(o, x)
   , s(x) .->. a(x, o)
-  , s(o) .->. q(o)
-  , q(s(s(o))) .->. s(s(s(o)))
-  -- , q(s(o)) .->. o
-  , s(s(s(s(s(o))))) .->. q(s(s(o)))
-  , s(d(x)) .->. a(x, x)
+  , a(q(x), f(x)) .->. q(s(x))
   , s(s(o)) .->. q(s(o))
+  -- , q(s(o)) .->. o
+  , s(o) .->. q(o)
+  , s(s(s(s(s(o))))) .->. q(s(s(o)))
+  , q(s(s(o))) .->. s(s(s(o)))
   , s(a(x, x)) .->. d(x)
+  , s(d(x)) .->. a(x, x)
   , s(a(q(a(x, y)), d(a(x, y)))) .->. a(a(q(x), q(y)), d(m(x, y)))
   , s(a(a(q(x), q(y)), d(m(x, y)))) .->. a(q(a(x, y)), d(a(x, y)))
   ]

@@ -26,9 +26,12 @@ prettyPolynomial poly = case sortBy (flip $ Poly.totalDegreeOrder vs) mons of
 
 prettyMonomial :: Poly.Monomial Text Int Int -> Doc ann
 prettyMonomial (Poly.Monomial c pp)
+  | emptyPP pp = pretty c
   | c == 1 = prettyPowerProd pp
   | c == -1 = "-" <+> prettyPowerProd pp
   | otherwise = pretty c <+> prettyPowerProd pp
+  where
+    emptyPP = Map.null . Poly.powerprodToMap
 
 prettyPowerProd :: Poly.PowerProduct Text Int -> Doc ann
 prettyPowerProd pp = sep [prettyExp v e | (v, e) <- Poly.exponents pp]

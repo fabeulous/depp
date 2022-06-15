@@ -37,10 +37,10 @@ encode poly = (l .->. r) : trsRn
  where
   n =
     maximum
-      [ e
-      | Monomial _ pp <- Poly.monomials poly
-      , e <- Map.elems (Poly.powerprodToMap pp)
-      ]
+      (0:[ e
+         | Monomial _ pp <- Poly.monomials poly
+         , e <- Map.elems (Poly.powerprodToMap pp)
+         ])
   trsRn = trsR0 ++ exponents n
   (l, r) = encodePolynomial poly
 
@@ -73,6 +73,7 @@ encodeMonomial (Monomial c pp)
 
 exponents :: Int -> TRS Text Text
 exponents n
+  | n == 0 = []
   | n == 1 = [s(p(1)(x)) .->. x, s(x) .->. p(1)(x)]
   | n > 1 =
     [ s(a(p(n)(x), a(x, p(n - 1)(x)))) .->. m(x, p(n - 1)(x))

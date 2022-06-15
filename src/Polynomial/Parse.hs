@@ -14,7 +14,7 @@ import Text.Parsec (ParsecT, Stream, (<|>))
 import qualified Text.Parsec as P
 
 parsePolynomial :: String -> Either P.ParseError (Polynomial Text Int Int)
-parsePolynomial s = coerce $ P.parse (polynomial <* P.eof) "Polynomial" s
+parsePolynomial s = coerce $ P.parse (P.spaces *> polynomial <* P.eof) "Polynomial" s
 
 polynomial :: Stream s m Char => ParsecT s u m (Polynomial Text Int Int)
 polynomial = P.chainl1 polySingleton op

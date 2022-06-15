@@ -1,5 +1,3 @@
-{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
-
 module Main where
 
 import qualified HilbertEncoding.Coefficients as Coefficients
@@ -130,10 +128,6 @@ main = do
                   hPutStrLn stderr $ "Parse error: " ++ show e
                   exitFailure
                 Right poly -> main' settings poly
-    (_, [], _) -> do
-      hPutStrLn stderr "Error: requires at least one of (-f,-d,-c) and a POLY."
-      usage stderr
-      exitFailure
     (_, _, e : _) -> do
       hPutStr stderr $ "Error: " ++ e
 

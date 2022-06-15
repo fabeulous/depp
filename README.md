@@ -1,4 +1,4 @@
-# Encodes Hilbert's 10th problem as PT problems
+# `depp`: Diophantine Equations as Polynomial-Termination Problems
 
 Encode variants of Hilbert's 10th problem as (incremental) polynomial
 termination problems.
@@ -19,7 +19,7 @@ When rebuilding/reinstalling you may need to add the
 
 ## Usage
 
-Usage: `hilbert-encodings [-f | -c | -d] [OPTIONS] POLY`
+Usage: `depp [-f | -c | -d] [OPTIONS] POLY`
 
 One of the options `--func` (`-f`), `--coef` (`-c`) or `--deg` (`-d`) must be
 given. If multiple encoding or output format options are specified,
@@ -46,7 +46,7 @@ INPUT FORMAT (POLY):
   <exp> := var "^" integer | var
 ```
 
-Here 'integer' is some integer (e.g. 1, -3, 10) and 'var' is a variable name
+Here `integer` is some integer (e.g. 1, -3, 10) and `var` is a variable name
 starting with a letter followed by 0 or more digits (e.g. x, x0, y10).
 Note that the starting letter is *not* case sensitive, and will be converted
 to upper-case.
